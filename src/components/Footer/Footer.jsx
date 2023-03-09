@@ -6,7 +6,7 @@ const Footer = () => {
     <div className="d-flex flex-column justify-content-center align-items-center gap-2 mt-5">
       <hr className="border border-primary border-1 opacity-75 w-100" />
       <h3>Expense Tracker</h3>
-      <div className="d-flex justify-conten-center align-items-center gap-3 mb-5">
+      <div className="d-flex justify-conten-center align-items-center gap-3 mb-3">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -50,7 +50,7 @@ const Footer = () => {
             viewBox="0 0 16 16"
           >
             <path d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8Zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0ZM8.146 4.992c-1.212 0-1.927.92-1.927 2.502v1.06c0 1.571.703 2.462 1.927 2.462.979 0 1.641-.586 1.729-1.418h1.295v.093c-.1 1.448-1.354 2.467-3.03 2.467-2.091 0-3.269-1.336-3.269-3.603V7.482c0-2.261 1.201-3.638 3.27-3.638 1.681 0 2.935 1.054 3.029 2.572v.088H9.875c-.088-.879-.768-1.512-1.729-1.512Z" />
-          </svg>
+          </svg>{" "}
           2021 All rights reserved | This website is made with{" "}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -61,10 +61,10 @@ const Footer = () => {
             viewBox="0 0 16 16"
           >
             <path
-              fill-rule="evenodd"
+              // fill-rule="evenodd"
               d="M8.49 10.92C19.412 3.382 11.28-2.387 8 .986 4.719-2.387-3.413 3.382 7.51 10.92l-.234.468a.25.25 0 1 0 .448.224l.04-.08c.009.17.024.315.051.45.068.344.208.622.448 1.102l.013.028c.212.422.182.85.05 1.246-.135.402-.366.751-.534 1.003a.25.25 0 0 0 .416.278l.004-.007c.166-.248.431-.646.588-1.115.16-.479.212-1.051-.076-1.629-.258-.515-.365-.732-.419-1.004a2.376 2.376 0 0 1-.037-.289l.008.017a.25.25 0 1 0 .448-.224l-.235-.468ZM6.726 1.269c-1.167-.61-2.8-.142-3.454 1.135-.237.463-.36 1.08-.202 1.85.055.27.467.197.527-.071.285-1.256 1.177-2.462 2.989-2.528.234-.008.348-.278.14-.386Z"
             />
-          </svg>
+          </svg>{" "}
           by Anuj Saraogi
         </p>
       </div>

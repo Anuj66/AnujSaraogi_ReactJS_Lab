@@ -18,6 +18,18 @@
       "description": "Dinner",
       "price": 160,
       "date": "2023-03-08"
+    },
+    {
+      "userId": 1,
+      "description": "Lunch",
+      "price": 200,
+      "date": "2023-03-09",
+      "user": {
+        "id": 1,
+        "name": "Anuj",
+        "email": "saraogi.anuj9@gmail.com"
+      },
+      "id": 2
     }
   ]
 }
