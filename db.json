@@ -27,16 +27,9 @@
     {
       "userId": "2",
       "description": "Dinner",
-      "price": "600",
+      "price": "200",
       "date": "2023-03-11",
       "id": 3
-    },
-    {
-      "userId": "1",
-      "description": "Price",
-      "price": "140",
-      "date": "2023-03-11",
-      "id": 4
     }
   ]
 }

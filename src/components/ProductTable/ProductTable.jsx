@@ -7,6 +7,63 @@ const ProductTable = () => {
   const refClose = useRef(null);
   const [users, setUsers] = useState([]);
 
+  const [ownerShipTable, setOwnerShipTable] = useState([]);
+  const [userPriceData, setUserPriceData] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+
+  const calculateUserPriceData = (usersData, billsData) => {
+    let tempUserPriceData = [];
+    for (const user of usersData) {
+      let sum = 0;
+      for (const bill of billsData) {
+        if (bill.userId == user.id) {
+          sum += parseInt(bill.price);
+        }
+      }
+      tempUserPriceData.push({ user, totalPaid: sum });
+    }
+
+    setUserPriceData(tempUserPriceData);
+  };
+
+  const calculateTotalAmount = (billsData) => {
+    let tempTotalAmount = 0;
+    for (const bill of billsData) {
+      tempTotalAmount += parseInt(bill.price);
+    }
+    setTotalAmount(tempTotalAmount);
+  };
+
+  const calculateOwnership = (usersData, billsData) => {
+    let tempOwnerShipTable = [];
+    for (const user of usersData) {
+      let ownership = [];
+      for (const user2 of usersData) {
+        if (user.id != user2.id) {
+          ownership.push({ id: user2.id, name: user2.name, owes: 0 });
+        }
+      }
+      tempOwnerShipTable.push({ id: user.id, name: user.name, ownership });
+    }
+
+    for (const bill of billsData) {
+      let individualAmount = parseInt(bill.price / users.length);
+      for (let owner of tempOwnerShipTable) {
+        if (owner.id == bill.userId) {
+          for (let owned of owner.ownership) {
+            owned.owes += individualAmount;
+          }
+        } else {
+          for (let owned of owner.ownership) {
+            owned.owes -= individualAmount;
+          }
+        }
+      }
+    }
+
+    setOwnerShipTable(tempOwnerShipTable);
+  };
+
   async function fetchData() {
     const bills = await fetch("http://localhost:3000/bills?_expand=user", {
       method: "GET",
@@ -25,6 +82,10 @@ const ProductTable = () => {
     });
     const usersDataJson = await usersData.json();
     setUsers(usersDataJson);
+
+    calculateTotalAmount(billsJson);
+    calculateUserPriceData(usersDataJson, billsJson);
+    calculateOwnership(usersDataJson, billsJson);
   }
 
   useEffect(() => {
@@ -49,6 +110,7 @@ const ProductTable = () => {
       body: JSON.stringify({ userId, description: product, price, date }),
     });
     fetchData();
+
     refClose.current.click();
   };
 
@@ -221,6 +283,49 @@ const ProductTable = () => {
                 );
               })
             )}
+          </tbody>
+        </table>
+      </div>
+      <hr className="mt-5 mb-5" />
+      <div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Description</th>
+              <th scope="col">Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Total</td>
+              <td>{totalAmount}</td>
+            </tr>
+            {userPriceData.map((user, index) => {
+              return (
+                <tr key={index}>
+                  <td>{user.user.name} paid</td>
+                  <td>{user.totalPaid}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <hr />
+        <table className="table">
+          <tbody>
+            {ownerShipTable.map((owner, index) => {
+              return (
+                <tr key={index}>
+                  {owner.ownership.map((owned, index) => {
+                    return (
+                      <td key={index}>{`${owner.name} will ${
+                        owned.owes > 0 ? "get from " : "pay to"
+                      } ${owned.name} : ${Math.abs(owned.owes)}`}</td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
