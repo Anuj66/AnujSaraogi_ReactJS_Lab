@@ -47,7 +47,7 @@ const ProductTable = () => {
     }
 
     for (const bill of billsData) {
-      let individualAmount = parseInt(bill.price / users.length);
+      let individualAmount = parseInt(bill.price / usersData.length);
       for (let owner of tempOwnerShipTable) {
         if (owner.id == bill.userId) {
           for (let owned of owner.ownership) {
@@ -319,7 +319,7 @@ const ProductTable = () => {
                   {owner.ownership.map((owned, index) => {
                     return (
                       <td key={index}>{`${owner.name} will ${
-                        owned.owes > 0 ? "get from " : "pay to"
+                        owned.owes >= 0 ? "get from " : "pay to"
                       } ${owned.name} : ${Math.abs(owned.owes)}`}</td>
                     );
                   })}

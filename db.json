@@ -30,6 +30,13 @@
       "price": "200",
       "date": "2023-03-11",
       "id": 3
+    },
+    {
+      "userId": "2",
+      "description": "Clothes",
+      "price": "5000",
+      "date": "2023-03-11",
+      "id": 4
     }
   ]
 }
