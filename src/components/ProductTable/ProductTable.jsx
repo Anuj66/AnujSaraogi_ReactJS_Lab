@@ -5,21 +5,61 @@ const ProductTable = () => {
   const [data, setData] = useState([]);
   const refOpen = useRef(null);
   const refClose = useRef(null);
+  const [users, setUsers] = useState([]);
+
+  async function fetchData() {
+    const bills = await fetch("http://localhost:3000/bills?_expand=user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const billsJson = await bills.json();
+    setData(billsJson);
+
+    const usersData = await fetch("http://localhost:3000/users", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const usersDataJson = await usersData.json();
+    setUsers(usersDataJson);
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      const result = await fetch("http://localhost:3000/bills?_expand=user", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      setData(await result.json());
-    }
     fetchData();
-  }, [data]);
+  }, []);
 
   const onAddHandler = () => {
     refOpen.current.click();
+  };
+
+  const onFormSubmit = async (e) => {
+    e.preventDefault();
+    const userId = e.target.user.value;
+    const product = e.target.product.value;
+    const price = e.target.price.value;
+    const date = e.target.date.value;
+    await fetch("http://localhost:3000/bills", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId, description: product, price, date }),
+    });
+    fetchData();
+    refClose.current.click();
+  };
+
+  const onDelete = async (billId) => {
+    await fetch("http://localhost:3000/bills/" + billId, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    fetchData();
   };
 
   return (
@@ -46,7 +86,10 @@ const ProductTable = () => {
               ></button>
             </div>
             <div className="modal-body">
-              <form className="row g-3 needs-validation" novalidate>
+              <form
+                className="row g-3 needs-validation"
+                onSubmit={(e) => onFormSubmit(e)}
+              >
                 <div className="col-12">
                   <label htmlFor="user" className="form-label">
                     Name
@@ -57,10 +100,14 @@ const ProductTable = () => {
                     className="form-select"
                     required
                   >
-                    <option value="anuj">Anuj</option>
-                    <option value="rohit">Rohit</option>
+                    {users.map((user, index) => {
+                      return (
+                        <option value={user.id} key={index}>
+                          {user.name}
+                        </option>
+                      );
+                    })}
                   </select>
-                  <div className="valid-feedback">Looks good!</div>
                 </div>
                 <div className="col-12">
                   <label htmlFor="product" className="form-label">
@@ -73,10 +120,6 @@ const ProductTable = () => {
                     placeholder="Enter the product name"
                     required
                   />
-                  <div className="valid-feedback">Looks good!</div>
-                  <div className="invalid-feedback">
-                    Please choose a product name.
-                  </div>
                 </div>
                 <div className="col-12">
                   <label htmlFor="price" className="form-label">
@@ -86,13 +129,9 @@ const ProductTable = () => {
                     <input
                       type="number"
                       className="form-control"
-                      id="pricevalidationCustomUsername"
+                      id="price"
                       required
                     />
-                    <div className="valid-feedback">Looks good!</div>
-                    <div className="invalid-feedback">
-                      Please enter a price.
-                    </div>
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -103,14 +142,13 @@ const ProductTable = () => {
                     type="date"
                     className="form-control"
                     id="date"
+                    max={new Date().toISOString().split("T")[0]}
                     required
                   />
-                  <div className="invalid-feedback">Please provide a date.</div>
-                  <div className="valid-feedback">Looks good!</div>
                 </div>
                 <div className="col-12">
                   <button className="btn btn-primary" type="submit">
-                    Add Product
+                    Submit
                   </button>
                 </div>
               </form>
@@ -143,6 +181,7 @@ const ProductTable = () => {
               <th scope="col">Product Purchased</th>
               <th scope="col">Price</th>
               <th scope="col">Payee</th>
+              <th scope="col">Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -157,6 +196,27 @@ const ProductTable = () => {
                     <td>{entry.description}</td>
                     <td>{entry.price}</td>
                     <td>{entry.user.name}</td>
+                    <td>
+                      <div
+                        style={{ cursor: "pointer" }}
+                        onClick={() => onDelete(entry.id)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          className="bi bi-trash"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                          <path
+                            fillRule="evenodd"
+                            d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                          />
+                        </svg>
+                      </div>
+                    </td>
                   </tr>
                 );
               })

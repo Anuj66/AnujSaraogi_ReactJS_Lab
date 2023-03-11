@@ -13,13 +13,6 @@
   ],
   "bills": [
     {
-      "id": 1,
-      "userId": 1,
-      "description": "Dinner",
-      "price": 160,
-      "date": "2023-03-08"
-    },
-    {
       "userId": 1,
       "description": "Lunch",
       "price": 200,
@@ -30,6 +23,20 @@
         "email": "saraogi.anuj9@gmail.com"
       },
       "id": 2
+    },
+    {
+      "userId": "2",
+      "description": "Dinner",
+      "price": "600",
+      "date": "2023-03-11",
+      "id": 3
+    },
+    {
+      "userId": "1",
+      "description": "Price",
+      "price": "140",
+      "date": "2023-03-11",
+      "id": 4
     }
   ]
 }
