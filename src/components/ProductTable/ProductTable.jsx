@@ -23,7 +23,7 @@ const ProductTable = () => {
       tempUserPriceData.push({ user, totalPaid: sum });
     }
 
-    setUserPriceData(tempUserPriceData);
+    return tempUserPriceData;
   };
 
   const calculateTotalAmount = (billsData) => {
@@ -31,11 +31,11 @@ const ProductTable = () => {
     for (const bill of billsData) {
       tempTotalAmount += parseInt(bill.price);
     }
-    setTotalAmount(tempTotalAmount);
+    return tempTotalAmount;
   };
 
   const calculateOwnership = (usersData, billsData) => {
-    let tempOwnerShipTable = [];
+    const tempOwnerShipTable = new Array();
     for (const user of usersData) {
       let ownership = [];
       for (const user2 of usersData) {
@@ -61,7 +61,7 @@ const ProductTable = () => {
       }
     }
 
-    setOwnerShipTable(tempOwnerShipTable);
+    return tempOwnerShipTable;
   };
 
   async function fetchData() {
@@ -83,9 +83,9 @@ const ProductTable = () => {
     const usersDataJson = await usersData.json();
     setUsers(usersDataJson);
 
-    calculateTotalAmount(billsJson);
-    calculateUserPriceData(usersDataJson, billsJson);
-    calculateOwnership(usersDataJson, billsJson);
+    setTotalAmount(calculateTotalAmount(billsJson));
+    setUserPriceData(calculateUserPriceData(usersDataJson, billsJson));
+    setOwnerShipTable(calculateOwnership(usersDataJson, billsJson));
   }
 
   useEffect(() => {

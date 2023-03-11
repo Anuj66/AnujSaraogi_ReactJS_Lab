@@ -13,28 +13,30 @@
   ],
   "bills": [
     {
-      "userId": 1,
+      "userId": "1",
+      "description": "Dinner",
+      "price": "1000",
+      "date": "2023-03-11",
+      "id": 1
+    },
+    {
+      "userId": "2",
       "description": "Lunch",
-      "price": 200,
-      "date": "2023-03-09",
-      "user": {
-        "id": 1,
-        "name": "Anuj",
-        "email": "saraogi.anuj9@gmail.com"
-      },
+      "price": "2000",
+      "date": "2023-03-11",
       "id": 2
     },
     {
       "userId": "2",
-      "description": "Dinner",
-      "price": "200",
+      "description": "Lunch",
+      "price": "1000",
       "date": "2023-03-11",
       "id": 3
     },
     {
-      "userId": "2",
+      "userId": "1",
       "description": "Clothes",
-      "price": "5000",
+      "price": "2000",
       "date": "2023-03-11",
       "id": 4
     }
